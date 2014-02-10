@@ -24,6 +24,10 @@ class VipNotifier < Sinatra::Base
   end
 
   post "/notify" do
+    if params.empty?
+      halt(400, "Payload required")
+    end
+
     message = [
       "------------------------------------------------------------",
       "New VIP deploy for #{params["theme"]}",
@@ -32,7 +36,7 @@ class VipNotifier < Sinatra::Base
       "Revision: #{params["deployed_revision"]}",
       "Previous revision: #{params["previous_revision"]}"
     ]
-    
+
     client.notify(message.join("\n"))
     "OK"
   end

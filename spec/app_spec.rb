@@ -50,5 +50,19 @@ describe "Application" do
       post "/notify", payload
       expect(last_response.body).to eq "OK"
     end
+
+    context "when payload is empty" do
+      before do
+        post "/notify"
+      end
+
+      it "responds with 400 bad request" do
+        expect(last_response.status).to eq 400
+      end
+
+      it "returns an error message" do
+        expect(last_response.body).to eq "Payload required"
+      end
+    end
   end
 end
