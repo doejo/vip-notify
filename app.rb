@@ -21,5 +21,6 @@ get "/test" do
 end
 
 post "/notify" do
+  client.notify(params.inspect)
   "OK"
 end
