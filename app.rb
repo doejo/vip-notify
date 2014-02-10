@@ -30,7 +30,7 @@ class VipNotifier < Sinatra::Base
 
     message = [
       "------------------------------------------------------------",
-      "New VIP deploy for #{params["theme"]}",
+      "New VIP deploy for #{params["theme"].upcase}",
       "------------------------------------------------------------",
       "By: #{params["deployer"]}",
       "Revision: #{params["deployed_revision"]}",
