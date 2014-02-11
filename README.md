@@ -39,3 +39,9 @@ thin start
 
 - `GET /test` - Test integration
 - `POST /notify` - Process payload and send message to Slack
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2014 Doejo LLC
