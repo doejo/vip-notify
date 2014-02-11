@@ -34,3 +34,8 @@ To start application just run:
 ```
 thin start
 ```
+
+## Endpoints
+
+- `GET /test` - Test integration
+- `POST /notify` - Process payload and send message to Slack
