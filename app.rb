@@ -10,7 +10,7 @@ class VipNotifier < Sinatra::Base
   def client
     @client ||= SlackNotify::Client.new(ENV["SLACK_TEAM"], ENV["SLACK_TOKEN"], {
       channel: ENV["SLACK_CHANNEL"],
-      username: "wp-vip"
+      username: ENV["SLACK_USER"] || "wp-vip"
     })
   end
 
