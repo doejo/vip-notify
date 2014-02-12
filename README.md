@@ -1,12 +1,8 @@
 # Vip-Notify
 
-Wordpress VIP notifier.
+Wordpress VIP deployments notifier.
 
-It sends notifications to a slack channel when new stuff gets deployed.
-
-## Requirements
-
-- Ruby 2.0
+It sends a new notification to Slack when new VIP code gets deployed.
 
 ## Install
 
@@ -20,25 +16,41 @@ bundle install
 
 ## Configure
 
-Application requires the following environment variables:
+Application requires the following environment variables to function:
 
-- `SLACK_TEAM` - Team name on Slack
-- `SLACK_TOKEN` - Integration token
+- `SLACK_TEAM`    - Team name on Slack
+- `SLACK_TOKEN`   - Integration token
 - `SLACK_CHANNEL` - Channel name to post updates to
-- `SLACK_USER` - Name of the user that sends notifications
+- `SLACK_USER`    - Name of the user that sends notifications
 
-## Run
+## Start
 
 To start application just run:
 
 ```
-thin start
+bundle exec thin start
 ```
 
 ## Endpoints
 
-- `GET /test` - Test integration
-- `POST /notify` - Process payload and send message to Slack
+Test integration endpoint:
+
+```
+GET /test
+```
+
+Notifications endpoint:
+
+```
+POST /notify
+```
+
+Required params:
+
+- `theme`             - Application theme name
+- `deployer`          - Deployer name
+- `deployed_revision` - Deployed commit ID
+- `previous_revision` - Previously deployed commit ID
 
 ## License
 
