@@ -54,10 +54,10 @@ PLATFORMS
 
 DEPENDENCIES
   rack-test
-  rake
+  rake (~> 10)
   rspec
   simplecov
-  sinatra
-  slack-notify
-  thin
+  sinatra (~> 1.4)
+  slack-notify (~> 0.1)
+  thin (~> 1.5)
   webmock
