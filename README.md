@@ -2,7 +2,9 @@
 
 Wordpress VIP deployments notifier.
 
-It sends a new notification to Slack when new VIP code gets deployed.
+It sends notifications to Slack when new VIP code gets deployed.
+
+[![Build Status](https://magnum-ci.com/status/b38ad73f56d913f20cee41044ad9ae08.png)](https://magnum-ci.com/public/db8ac9168b65019f934d/builds)
 
 ## Install
 
