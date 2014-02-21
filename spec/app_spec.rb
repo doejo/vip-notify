@@ -34,7 +34,7 @@ describe "Application" do
         deployer: "John Doe",
         deployed_revision: "ABC",
         previous_revision: "DEF",
-        revision_log: "HIJ"
+        revision_log: "LOG"
       }
     end
 

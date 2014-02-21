@@ -4,3 +4,4 @@ New VIP deploy for APP
 By: John Doe
 Revision: ABC
 Previous revision: DEF
+Revision log: LOG
