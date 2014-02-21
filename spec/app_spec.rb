@@ -5,7 +5,7 @@ describe "Application" do
     before { get "/" }
 
     it "renders home page" do
-      expect(last_response.body).to eq "VIP Notifier"
+      expect(last_response.body).to eq "VIP Notifier v#{VipNotifier::VERSION}"
     end
   end
 

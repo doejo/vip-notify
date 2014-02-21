@@ -7,6 +7,8 @@ require "slack-notify"
 end
 
 class VipNotifier < Sinatra::Base
+  VERSION = "0.1.2"
+
   def client
     @client ||= SlackNotify::Client.new(ENV["SLACK_TEAM"], ENV["SLACK_TOKEN"], {
       channel: ENV["SLACK_CHANNEL"],
@@ -15,7 +17,7 @@ class VipNotifier < Sinatra::Base
   end
 
   get "/" do
-    "VIP Notifier"
+    "VIP Notifier v#{VERSION}"
   end
 
   get "/test" do
