@@ -34,7 +34,8 @@ class VipNotifier < Sinatra::Base
       "------------------------------------------------------------",
       "By: #{params["deployer"]}",
       "Revision: #{params["deployed_revision"]}",
-      "Previous revision: #{params["previous_revision"]}"
+      "Previous revision: #{params["previous_revision"]}",
+      "Revision log: #{params["revision_log"]}"
     ]
 
     client.notify(message.join("\n"))
