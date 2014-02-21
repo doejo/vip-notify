@@ -33,7 +33,8 @@ describe "Application" do
         theme: "app",
         deployer: "John Doe",
         deployed_revision: "ABC",
-        previous_revision: "DEF"
+        previous_revision: "DEF",
+        revision_log: "HIJ"
       }
     end
 
