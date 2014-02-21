@@ -28,6 +28,11 @@ class VipNotifier < Sinatra::Base
       halt(400, "Payload required")
     end
 
+    # Log request to stdout if debugging is enabled
+    if ENV["DEBUG"]
+      STDOUT.puts(params.inspect)
+    end
+
     message = [
       "------------------------------------------------------------",
       "New VIP deploy for #{params["theme"].upcase}",

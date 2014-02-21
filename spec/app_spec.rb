@@ -30,11 +30,11 @@ describe "Application" do
 
     let(:payload) do
       {
-        theme: "app",
-        deployer: "John Doe",
-        deployed_revision: "ABC",
-        previous_revision: "DEF",
-        revision_log: "LOG"
+        "theme"             => "app",
+        "deployer"          => "John Doe",
+        "deployed_revision" => "ABC",
+        "previous_revision" => "DEF",
+        "revision_log"      => "LOG"
       }
     end
 
@@ -63,6 +63,23 @@ describe "Application" do
 
       it "returns an error message" do
         expect(last_response.body).to eq "Payload required"
+      end
+    end
+
+    context "when debug env is set" do
+      before do
+        ENV["DEBUG"] = "1"
+        STDOUT.stub(:puts)
+
+        post "/notify", payload
+      end
+
+      it "logs incoming params to stdout" do
+        expect(STDOUT).to have_received(:puts).with(payload.inspect)
+      end
+
+      after do
+        ENV["DEBUG"] = nil
       end
     end
   end
