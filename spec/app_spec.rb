@@ -19,7 +19,7 @@ describe "Application" do
       get "/test"
     end
 
-    it "returns OK" do
+    it "responds with OK" do
       get "/test"
       expect(last_response.body).to eq "OK"
     end
@@ -42,14 +42,21 @@ describe "Application" do
       SlackNotify::Client.any_instance.stub(:notify)
     end
 
-    it "sends a message" do
-      expect_any_instance_of(SlackNotify::Client).to receive(:notify).with(message.strip)
-      post "/notify", payload
-    end
+    context "with valid payload" do
+      it "generates a message" do
+        expect_any_instance_of(Message).to receive(:to_s)
+        post "/notify", payload
+      end
 
-    it "returns OK" do
-      post "/notify", payload
-      expect(last_response.body).to eq "OK"
+      it "sends notification" do
+        expect_any_instance_of(SlackNotify::Client).to receive(:notify)
+        post "/notify", payload
+      end
+
+      it "responds with OK" do
+        post "/notify", payload
+        expect(last_response.body).to eq "OK"
+      end
     end
 
     context "when payload is empty" do
@@ -63,19 +70,6 @@ describe "Application" do
 
       it "returns an error message" do
         expect(last_response.body).to eq "Payload required"
-      end
-    end
-
-    context "when payload has multiple revisions" do
-      let(:message) { fixture "message_multiline.txt" }
-
-      before do
-        payload["revision_log"] = "Line 1\nLine 2\nLine 3"
-      end
-
-      it "formats message with multiple lines" do
-        expect_any_instance_of(SlackNotify::Client).to receive(:notify).with(message)
-        post "/notify", payload
       end
     end
 

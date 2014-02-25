@@ -5,8 +5,8 @@ class Message
     @params = params
   end
 
-  def lines
-    [
+  def to_s
+    lines = [
       "------------------------------------------------------------",
       "New VIP deploy for #{params["theme"].upcase}",
       "------------------------------------------------------------",
@@ -16,9 +16,7 @@ class Message
       "Revision log:\n",
       params["revision_log"]
     ]
-  end
 
-  def to_s
     lines.join("\n").strip
   end
 end
