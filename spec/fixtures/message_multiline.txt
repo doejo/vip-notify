@@ -6,4 +6,6 @@ Revision: ABC
 Previous revision: DEF
 Revision log:
 
-LOG
+Line 1
+Line 2
+Line 3

@@ -66,6 +66,19 @@ describe "Application" do
       end
     end
 
+    context "when payload has multiple revisions" do
+      let(:message) { fixture "message_multiline.txt" }
+
+      before do
+        payload["revision_log"] = "Line 1\nLine 2\nLine 3"
+      end
+
+      it "formats message with multiple lines" do
+        expect_any_instance_of(SlackNotify::Client).to receive(:notify).with(message)
+        post "/notify", payload
+      end
+    end
+
     context "when debug env is set" do
       before do
         ENV["DEBUG"] = "1"
