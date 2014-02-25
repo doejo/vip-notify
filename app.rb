@@ -9,6 +9,31 @@ end
 class VipNotifier < Sinatra::Base
   VERSION = "0.1.2"
 
+  class Message
+    attr_reader :params
+
+    def initialize(params)
+      @params = params
+    end
+
+    def lines
+      [
+        "------------------------------------------------------------",
+        "New VIP deploy for #{params["theme"].upcase}",
+        "------------------------------------------------------------",
+        "By: #{params["deployer"]}",
+        "Revision: #{params["deployed_revision"]}",
+        "Previous revision: #{params["previous_revision"]}",
+        "Revision log:\n",
+        params["revision_log"]
+      ]
+    end
+
+    def to_s
+      lines.join("\n")
+    end
+  end
+
   def client
     @client ||= SlackNotify::Client.new(ENV["SLACK_TEAM"], ENV["SLACK_TOKEN"], {
       channel: ENV["SLACK_CHANNEL"],
@@ -35,18 +60,8 @@ class VipNotifier < Sinatra::Base
       STDOUT.puts(params.inspect)
     end
 
-    message = [
-      "------------------------------------------------------------",
-      "New VIP deploy for #{params["theme"].upcase}",
-      "------------------------------------------------------------",
-      "By: #{params["deployer"]}",
-      "Revision: #{params["deployed_revision"]}",
-      "Previous revision: #{params["previous_revision"]}",
-      "Revision log:\n",
-      params["revision_log"]
-    ]
-    
-    client.notify(message.join("\n"))
+    # Send message to Slack channel
+    client.notify(Message.new(params).to_s)
     "OK"
   end
 end
