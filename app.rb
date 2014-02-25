@@ -8,7 +8,7 @@ require "./lib/message"
 end
 
 class VipNotifier < Sinatra::Base
-  VERSION = "0.1.2"
+  VERSION = "0.1.3"
 
   def client
     @client ||= SlackNotify::Client.new(ENV["SLACK_TEAM"], ENV["SLACK_TOKEN"], {
