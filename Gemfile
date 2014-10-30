@@ -6,6 +6,10 @@ gem "sinatra",      "~> 1.4"
 gem "thin",         "~> 1.5", require: false
 gem "slack-notify", "~> 0.1"
 
+group :development do
+  gem "foreman", require: false
+end
+
 group :test do
   gem "rspec"
   gem "rack-test"
