@@ -1,10 +1,6 @@
 # Vip-Notify
 
-Wordpress VIP deployments notifier.
-
-It sends notifications to Slack when new VIP code gets deployed.
-
-[![Build Status](https://magnum-ci.com/status/b38ad73f56d913f20cee41044ad9ae08.png)](https://magnum-ci.com/public/db8ac9168b65019f934d/builds)
+Send wordpress VIP deployment notifications to a Slack channel.
 
 ## Install
 
@@ -20,8 +16,7 @@ bundle install
 
 Application requires the following environment variables to function:
 
-- `SLACK_TEAM`    - Team name on Slack
-- `SLACK_TOKEN`   - Integration token
+- `SLACK_WEBHOOK` - Wehbook url for a channel
 - `SLACK_CHANNEL` - Channel name to post updates to
 - `SLACK_USER`    - Name of the user that sends notifications
 
@@ -58,4 +53,4 @@ Required params:
 
 The MIT License (MIT)
 
-Copyright (c) 2014 Doejo LLC
+Copyright (c) 2014-2015 Doejo LLC
