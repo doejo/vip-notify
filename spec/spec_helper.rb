@@ -1,8 +1,7 @@
 ENV["RACK_ENV"] = "test"
 
 # Initialize fake slack environment vars
-ENV["SLACK_TEAM"]    = "foobar"
-ENV["SLACK_TOKEN"]   = "foobar"
+ENV["SLACK_WEBHOOK"] = "http://foo"
 ENV["SLACK_CHANNEL"] = "foobar"
 ENV["SLACK_USER"]    = "foobar"
 

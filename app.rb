@@ -3,7 +3,7 @@ require "sinatra"
 require "slack-notify"
 require "./lib/message"
 
-["SLACK_TEAM", "SLACK_TOKEN", "SLACK_CHANNEL"].each do |var|
+["SLACK_WEBHOOK", "SLACK_CHANNEL"].each do |var|
   raise "#{var} required" if ENV[var].nil?
 end
 
@@ -11,11 +11,12 @@ class VipNotifier < Sinatra::Base
   VERSION = "0.1.3"
 
   def client
-    @client ||= SlackNotify::Client.new(ENV["SLACK_TEAM"], ENV["SLACK_TOKEN"], {
-      channel: ENV["SLACK_CHANNEL"],
-      username: ENV["SLACK_USER"] || "wp-vip",
-      icon_url: "https://s.w.org/about/images/logos/wordpress-logo-simplified-rgb.png"
-    })
+    @client ||= SlackNotify::Client.new(
+      webhook_url: ENV["SLACK_WEBHOOK"],
+      channel:     ENV["SLACK_CHANNEL"],
+      username:    ENV["SLACK_USER"] || "wp-vip",
+      icon_url:    "https://s.w.org/about/images/logos/wordpress-logo-simplified-rgb.png"
+    )
   end
 
   get "/" do
