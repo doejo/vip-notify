@@ -8,7 +8,7 @@ require "./lib/message"
 end
 
 class VipNotifier < Sinatra::Base
-  VERSION = "0.1.3"
+  VERSION = "0.2.0"
 
   def client
     @client ||= SlackNotify::Client.new(
