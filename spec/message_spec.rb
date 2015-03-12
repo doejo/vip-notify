@@ -13,25 +13,28 @@ describe Message do
 
   let(:message) { described_class.new(params) }
 
-  describe "#initialize" do
-    it "sets params" do
-      expect(message.params).to eq params
-    end
-  end
-
-  describe "#to_s" do
-    it "formats a message" do
-      expect(message.to_s).to eq fixture("message.txt")
-    end
-
-    context "with multiple revisions" do
-      before do
-        params["revision_log"] = "Line 1\nLine 2\nLine 3"
-      end
-
-      it "formats a message with multiple revision" do
-        expect(message.to_s).to eq fixture("message_multiline.txt")
-      end
+  describe "#payload" do
+    it "returns formatted hash" do
+      expect(message.payload).to eq Hash(
+        username: "foobar",
+        icon_url: "https://s.w.org/about/images/logos/wordpress-logo-simplified-rgb.png",
+        attachments: [
+          {
+            fallback: "New app deployment by John Doe",
+            fields: [
+              { title: "Project", value: "app", short: true},
+              { title: "Revision", value: "ABC", short: true},
+              { title: "Deployer", value: "John Doe", short: true},
+              { title: "Previous Revision", value: "DEF", short: true}
+            ]
+          },
+          {
+            color: "good",
+            pretext: "Commits:",
+            text: "LOG"
+          }
+        ]
+      )
     end
   end
 end

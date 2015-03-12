@@ -3,8 +3,9 @@ ruby "2.1.5"
 
 gem "rake",         "~> 10"
 gem "sinatra",      "~> 1.4"
+gem "hashr",        "~> 0.0.22"
 gem "thin",         "~> 1.5", require: false
-gem "slack-notify", "~> 0.4"
+gem "faraday",      "~> 0.9"
 
 group :development do
   gem "foreman", require: false

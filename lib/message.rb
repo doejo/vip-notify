@@ -1,22 +1,55 @@
-class Message
-  attr_reader :params
+require "hashr"
 
-  def initialize(params)
-    @params = params
+class Message
+  attr_reader :data
+
+  def initialize(data)
+    @data = Hashr.new(data)
   end
 
-  def to_s
-    lines = [
-      "-----------------------------------------------------------------------",
-      "New VIP deploy for #{params["theme"].upcase}",
-      "-----------------------------------------------------------------------",
-      "By: #{params["deployer"]}",
-      "Revision: #{params["deployed_revision"]}",
-      "Previous revision: #{params["previous_revision"]}",
-      "Revision log:\n",
-      params["revision_log"]
-    ]
+  def theme
+    data.theme
+  end
 
-    lines.join("\n").strip
+  def payload
+    {
+      username:    username,
+      icon_url:    icon,
+      attachments: [deploy, commits]
+    }
+  end
+
+  private
+
+  def username
+    ENV["SLACK_USER"] || "VIP Deployments"
+  end
+
+  def icon
+    ENV["SLACK_ICON"] || "https://s.w.org/about/images/logos/wordpress-logo-simplified-rgb.png"
+  end
+
+  def deploy
+    {
+      fallback: "New #{data.theme} deployment by #{data.deployer}",
+      fields: [
+        { title: "Project", value: data.theme, short: true },
+        { title: "Revision", value: data.deployed_revision, short: true },
+        { title: "Deployer", value: data.deployer, short: true },
+        { title: "Previous Revision", value: data.previous_revision, short: true }
+      ]
+    }
+  end
+
+  def commits
+    {
+      color: "good",
+      pretext: "Commits:",
+      text: revision_log
+    }
+  end
+
+  def revision_log
+    data.revision_log.to_s.gsub("* ", "").gsub(" -- ", " - ")
   end
 end

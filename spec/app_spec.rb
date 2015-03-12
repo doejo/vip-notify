@@ -11,12 +11,10 @@ describe "Application" do
 
   describe "GET /test" do
     before do
-      SlackNotify::Client.any_instance.stub(:test)
-    end
-
-    it "sends a test message" do
-      expect_any_instance_of(SlackNotify::Client).to receive(:test)
-      get "/test"
+      stub_request(:post, "http://slackhook/").
+         with(:body => {"{\"username\":\"foobar\",\"icon_url\":\"https://s.w.org/about/images/logos/wordpress-logo-simplified-rgb.png\",\"attachments\":"=>{"{\"fallback\":\"New theme-name deployment by deployer-name\",\"fields\":"=>{"{\"title\":\"Project\",\"value\":\"theme-name\",\"short\":true},{\"title\":\"Revision\",\"value\":\"NEW REV\",\"short\":true},{\"title\":\"Deployer\",\"value\":\"deployer-name\",\"short\":true},{\"title\":\"Previous Revision\",\"value\":\"OLD REV\",\"short\":true}"=>{"},{\"color\":\"good\",\"pretext\":\"Commits:\",\"text\":\"SAMPLE LOG\"}"=>{",\"channel\":\"#foobar\"}"=>true}}}}},
+              :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.1'}).
+         to_return(:status => 200, :body => "", :headers => {})
     end
 
     it "responds with OK" do
@@ -38,19 +36,12 @@ describe "Application" do
       }
     end
 
-    before do
-      SlackNotify::Client.any_instance.stub(:notify)
-    end
-
     context "with valid payload" do
-      it "generates a message" do
-        expect_any_instance_of(Message).to receive(:to_s)
-        post "/notify", payload
-      end
-
-      it "sends notification" do
-        expect_any_instance_of(SlackNotify::Client).to receive(:notify)
-        post "/notify", payload
+      before do
+        stub_request(:post, "http://slackhook/").
+         with(:body => {"{\"username\":\"foobar\",\"icon_url\":\"https://s.w.org/about/images/logos/wordpress-logo-simplified-rgb.png\",\"attachments\":"=>{"{\"fallback\":\"New app deployment by John Doe\",\"fields\":"=>{"{\"title\":\"Project\",\"value\":\"app\",\"short\":true},{\"title\":\"Revision\",\"value\":\"ABC\",\"short\":true},{\"title\":\"Deployer\",\"value\":\"John Doe\",\"short\":true},{\"title\":\"Previous Revision\",\"value\":\"DEF\",\"short\":true}"=>{"},{\"color\":\"good\",\"pretext\":\"Commits:\",\"text\":\"LOG\"}"=>{",\"channel\":\"#foobar\"}"=>true}}}}},
+              :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.1'}).
+         to_return(:status => 200, :body => "", :headers => {})
       end
 
       it "responds with OK" do
@@ -75,14 +66,21 @@ describe "Application" do
 
     context "when debug env is set" do
       before do
+        stub_request(:post, "http://slackhook/").
+         with(:body => {"{\"username\":\"foobar\",\"icon_url\":\"https://s.w.org/about/images/logos/wordpress-logo-simplified-rgb.png\",\"attachments\":"=>{"{\"fallback\":\"New app deployment by John Doe\",\"fields\":"=>{"{\"title\":\"Project\",\"value\":\"app\",\"short\":true},{\"title\":\"Revision\",\"value\":\"ABC\",\"short\":true},{\"title\":\"Deployer\",\"value\":\"John Doe\",\"short\":true},{\"title\":\"Previous Revision\",\"value\":\"DEF\",\"short\":true}"=>{"},{\"color\":\"good\",\"pretext\":\"Commits:\",\"text\":\"LOG\"}"=>{",\"channel\":\"#foobar\"}"=>true}}}}},
+              :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.1'}).
+         to_return(:status => 200, :body => "", :headers => {})
+      end
+
+      before do
         ENV["DEBUG"] = "1"
-        STDOUT.stub(:puts)
+        STDERR.stub(:puts)
 
         post "/notify", payload
       end
 
-      it "logs incoming params to stdout" do
-        expect(STDOUT).to have_received(:puts).with(payload.inspect)
+      it "logs incoming params to stderr" do
+        expect(STDERR).to have_received(:puts).with(payload.inspect)
       end
 
       after do

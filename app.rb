@@ -1,6 +1,6 @@
 require "bundler/setup"
 require "sinatra"
-require "slack-notify"
+require "./lib/client"
 require "./lib/message"
 
 ["SLACK_WEBHOOK", "SLACK_CHANNEL"].each do |var|
@@ -11,12 +11,29 @@ class VipNotifier < Sinatra::Base
   VERSION = "0.2.0"
 
   def client
-    @client ||= SlackNotify::Client.new(
-      webhook_url: ENV["SLACK_WEBHOOK"],
-      channel:     ENV["SLACK_CHANNEL"],
-      username:    ENV["SLACK_USER"] || "wp-vip",
-      icon_url:    "https://s.w.org/about/images/logos/wordpress-logo-simplified-rgb.png"
-    )
+    @client ||= Client.new(ENV["SLACK_WEBHOOK"])
+  end
+
+  def default_channel
+    ENV["SLACK_CHANNEL"]
+  end
+
+  def parse_mappings
+    (ENV["NOTIFICATIONS"] || "").split(";").inject({}) do |hash, grp|
+      names, channels = grp.split(":")
+      names.split(",").map(&:strip).uniq.each do |n|
+        hash[n] = channels.split(",").map(&:strip)
+      end
+      hash
+    end
+  end
+
+  def channel_mappings
+    @channel_mappings ||= parse_mappings
+  end
+
+  def channels_for_project(project)
+    channel_mappings[project] || [default_channel] 
   end
 
   get "/" do
@@ -24,7 +41,15 @@ class VipNotifier < Sinatra::Base
   end
 
   get "/test" do
-    client.test
+    data = {
+      theme: "theme-name",
+      deployer: "deployer-name",
+      previous_revision: "OLD REV",
+      deployed_revision: "NEW REV",
+      revision_log: "SAMPLE LOG"
+    }
+
+    client.deliver(Message.new(data).payload, default_channel)
     "OK"
   end
 
@@ -33,13 +58,17 @@ class VipNotifier < Sinatra::Base
       halt(400, "Payload required")
     end
 
-    # Log request to stdout if debugging is enabled
     if ENV["DEBUG"]
-      STDOUT.puts(params.inspect)
+      STDERR.puts(params.inspect)
     end
 
-    # Send message to Slack channel
-    client.notify(Message.new(params).to_s)
+    message = Message.new(params)
+    payload = message.payload
+    
+    channels_for_project(message.theme).each do |chan|
+      client.deliver(payload, chan)
+    end
+    
     "OK"
   end
 end

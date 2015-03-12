@@ -1,7 +1,7 @@
 ENV["RACK_ENV"] = "test"
 
 # Initialize fake slack environment vars
-ENV["SLACK_WEBHOOK"] = "http://foo"
+ENV["SLACK_WEBHOOK"] = "http://slackhook"
 ENV["SLACK_CHANNEL"] = "foobar"
 ENV["SLACK_USER"]    = "foobar"
 
@@ -10,6 +10,7 @@ SimpleCov.start
 
 require "sinatra"
 require "rack/test"
+require "webmock/rspec"
 require "./app"
 
 RSpec.configure do |config|
