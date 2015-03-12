@@ -1,13 +1,13 @@
-# Vip-Notify
+# vip-notify
 
-Send wordpress VIP deployment notifications to a Slack channel.
+Send wordpress VIP deployment notifications to Slack
 
 ## Install
 
 Clone repository and install dependencies:
 
 ```
-git clone git@gitlab.doejo.com:doejo/vip-notify.git
+git clone https://github.com/doejo/vip-notify.git
 cd vip-notify
 bundle install
 ```
