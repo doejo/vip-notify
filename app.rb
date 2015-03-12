@@ -8,7 +8,7 @@ require "./lib/message"
 end
 
 class VipNotifier < Sinatra::Base
-  VERSION = "0.2.0"
+  VERSION = "0.3.0"
 
   def client
     @client ||= Client.new(ENV["SLACK_WEBHOOK"])
