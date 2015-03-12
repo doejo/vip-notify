@@ -50,6 +50,7 @@ Required params:
 - `deployer`          - Deployer name
 - `deployed_revision` - Deployed commit ID
 - `previous_revision` - Previously deployed commit ID
+- `revision_log`      - Revision log text
 
 ## License
 
