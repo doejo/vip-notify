@@ -2,6 +2,8 @@
 
 Send wordpress VIP deployment notifications to Slack
 
+[![Travis](https://img.shields.io/travis/doejo/vip-notify.svg)]()
+
 ## Install
 
 Clone repository and install dependencies:
