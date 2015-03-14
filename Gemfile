@@ -1,5 +1,4 @@
 source "https://rubygems.org"
-ruby "2.1.5"
 
 gem "rake",         "~> 10"
 gem "sinatra",      "~> 1.4"
