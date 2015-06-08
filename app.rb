@@ -49,7 +49,8 @@ class VipNotifier < Sinatra::Base
       revision_log: "SAMPLE LOG"
     }
 
-    client.deliver(Message.new(data).payload, default_channel)
+    resp = client.deliver(Message.new(data).payload, default_channel)
+    puts "Response: #{resp}"
     "OK"
   end
 
@@ -66,7 +67,8 @@ class VipNotifier < Sinatra::Base
     payload = message.payload
     
     channels_for_project(message.theme).each do |chan|
-      client.deliver(payload, chan)
+      resp = client.deliver(payload, chan)
+      puts "Response: #{resp}"
     end
     
     "OK"
