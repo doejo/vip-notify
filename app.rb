@@ -50,7 +50,7 @@ class VipNotifier < Sinatra::Base
     }
 
     resp = client.deliver(Message.new(data).payload, default_channel)
-    puts "Response: #{resp}"
+    STDERR.puts "Response: #{resp}"
     "OK"
   end
 
@@ -60,7 +60,7 @@ class VipNotifier < Sinatra::Base
     end
 
     if ENV["DEBUG"]
-      STDERR.puts(params.inspect)
+      STDERR.puts params.inspect
     end
 
     message = Message.new(params)
@@ -68,7 +68,7 @@ class VipNotifier < Sinatra::Base
     
     channels_for_project(message.theme).each do |chan|
       resp = client.deliver(payload, chan)
-      puts "Response: #{resp}"
+      STDERR.puts "Response: #{resp}"
     end
     
     "OK"
